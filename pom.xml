@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.14</version>
+    </parent>
+
+    <groupId>com.github.Starry-Gaze</groupId>
+    <artifactId>MidJourneyAidProxy</artifactId>
+    <version>0.0.1</version>
+
+    <properties>
+        <!-- 这个属性定义了项目中Hutool库的版本号。Hutool是一个Java工具包，提供了很多常用工具类和函数。-->
+        <hutool.version>5.8.18</hutool.version>
+        <!--这个属性定义了项目中JSON处理库org.json的版本号。-->
+        <org-json.version>20220924</org-json.version>
+        <!--这个属性定义了项目中Java Discord API (JDA)的版本号。JDA是一个用于与Discord API交互的Java库。-->
+        <jda.version>5.0.0-beta.9</jda.version>
+        <!--这个属性定义了项目中GPT-3 Java库的版本号。这是一个用于与OpenAI的GPT-3模型交互的库。-->
+        <openai-gpt3-java.version>0.12.0</openai-gpt3-java.version>
+        <!--这个属性定义了项目中Data URL处理库的版本号。Data URL是一种可以直接在URL中嵌入小文件的技术。-->
+        <dataurl.version>2.0.0</dataurl.version>
+        <!--这个属性定义了项目中Knife4j库的版本号。Knife4j是一个用于Java项目生成和展示OpenAPI文档的工具。-->
+        <knife4j.verison>4.1.0</knife4j.verison>
+        <!--这个属性定义了项目中Java语言的版本号。-->
+        <java.version>17</java.version>
+        <!--这两个属性用来指定Maven编译时使用的Java版本，它们的值都来源于java.version属性。-->
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <!--这个依赖提供了开发Spring Web MVC应用所需要的库，包括了Spring MVC, Spring Web, Tomcat等等。-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!--这个依赖包含了Spring Data Redis，它是Spring Boot与Redis数据库交互的框架。-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!--Hutool是一个Java工具包，这些依赖分别提供了Hutool的核心功能，缓存功能，和加密功能。-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-core</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-cache</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-crypto</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <!--这个依赖提供了用于处理JSON数据的库。-->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>${org-json.version}</version>
+        </dependency>
+        <!--这个是Java Discord API (JDA)的依赖，用于在Java应用中与Discord进行交互。-->
+        <dependency>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+            <version>${jda.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>club.minnced</groupId>
+                    <artifactId>opus-java</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--这个依赖是一个GPT-3 API的Java库，用于在Java应用中使用OpenAI的GPT-3模型。-->
+        <dependency>
+            <groupId>com.theokanning.openai-gpt3-java</groupId>
+            <artifactId>service</artifactId>
+            <version>${openai-gpt3-java.version}</version>
+        </dependency>
+        <!--这个依赖提供了处理Data URLs的库，Data URLs是一种将小文件直接嵌入网页的技术。-->
+        <dependency>
+            <groupId>eu.maxschuster</groupId>
+            <artifactId>dataurl</artifactId>
+            <version>${dataurl.version}</version>
+        </dependency>
+        <!--这是Knife4j的Spring Boot Starter，Knife4j是一个为Java项目生成和展示OpenAPI文档的工具。-->
+		<dependency>
+			<groupId>com.github.xiaoymin</groupId>
+			<artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
+			<version>${knife4j.verison}</version>
+		</dependency>
+        <!--这个依赖提供了一种处理Spring Boot配置元数据的方法。-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--Lombok是一个可以简化Java代码的库，例如它可以通过注解的方式自动生成getter/setter方法，极大的减少了模板代码。-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
