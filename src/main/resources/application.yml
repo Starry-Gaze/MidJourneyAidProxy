@@ -1,0 +1,54 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /mj
+logging:
+  level:
+    ROOT: info
+    com.github.starrygaze.midjourney: debug
+knife4j:
+  enable: true
+  openapi:
+    title: Midjourney Proxy API文档
+    description: 代理 MidJourney 的discord频道，实现api形式调用AI绘图,公益
+    concat: starrygaze
+    url: https://github.com/Starry-Gaze/MidJourneyAidProxy
+    version: v0.0.1
+    terms-of-service-url: https://github.com/Starry-Gaze/MidJourneyAidProxy
+    group:
+      api:
+        group-name: API
+        api-rule: package
+        api-rule-resources:
+          - com.github.starrygaze.midjourney.controller
+mj:
+  #
+  task-store:
+    type: in_memory
+    timeout: 30d
+  #discord配置
+  discord:
+    #服务器id
+    guild-id: XXX
+    #频道id
+    channel-id: XXX
+    #登录token
+    user-token: XXX
+    #机器人token
+    bot-token: XXX
+  #代理配置
+  proxy:
+    #本地代理地址
+    host: 127.0.0.1
+    #本地代理端口
+    port: 7890
+  translate-way: null
+  #任务队列配置
+  queue:
+    #任务超时时间(分钟)
+    timeout-minutes: 5
+    #并发数
+    core-size: 3
+    #等待队列长度
+    queue-size: 10
+
