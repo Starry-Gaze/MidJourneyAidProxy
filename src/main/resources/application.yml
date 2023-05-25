@@ -51,4 +51,29 @@ mj:
     core-size: 3
     #等待队列长度
     queue-size: 10
+  #百度翻译配置
+  baidu-translate:
+    #百度翻译的APP_ID
+    appid: XXX
+    #百度翻译的密钥
+    app-secret: XXX
+  #openai配置
+  openai:
+    #gpt的api-key
+    gpt-api-key: XXX
+    #使用的模型
+    model: "gpt-3.5-turbo"
+    #返回结果的最大分词数
+    max-tokens: 2048
+    #相似度，取值 0-2
+    temperature: 0
+  #任务状态变更回调地址(你实际中转的项目地址)
+  notify-hook:
+
+
+
+
+
+
+
 
