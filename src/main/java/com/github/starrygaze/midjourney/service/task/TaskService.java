@@ -1,7 +1,7 @@
-package com.github.starrygaze.midjourney.service;
+package com.github.starrygaze.midjourney.service.task;
 
 import com.github.starrygaze.midjourney.result.Message;
-import com.github.starrygaze.midjourney.support.Task;
+import com.github.starrygaze.midjourney.entity.Task;
 import com.github.starrygaze.midjourney.support.TaskCondition;
 import eu.maxschuster.dataurl.DataUrl;
 

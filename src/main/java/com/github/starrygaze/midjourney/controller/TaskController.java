@@ -1,7 +1,7 @@
 package com.github.starrygaze.midjourney.controller;
 
-import com.github.starrygaze.midjourney.service.TaskStoreService;
-import com.github.starrygaze.midjourney.support.Task;
+import com.github.starrygaze.midjourney.service.store.TaskStoreService;
+import com.github.starrygaze.midjourney.entity.Task;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -18,6 +18,7 @@ import java.util.List;
 @RequestMapping("/task")
 @RequiredArgsConstructor
 public class TaskController {
+
 	private final TaskStoreService taskStoreService;
 
 	@ApiOperation(value = "查询所有任务")

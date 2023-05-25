@@ -1,4 +1,4 @@
-package com.github.starrygaze.midjourney.service;
+package com.github.starrygaze.midjourney.service.discord;
 
 import com.github.starrygaze.midjourney.result.Message;
 import eu.maxschuster.dataurl.DataUrl;

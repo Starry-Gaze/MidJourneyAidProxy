@@ -1,9 +1,10 @@
-package com.github.starrygaze.midjourney.service;
+package com.github.starrygaze.midjourney.service.discord.impl;
 
 import cn.hutool.core.io.resource.ResourceUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.github.starrygaze.midjourney.ProxyProperties;
 import com.github.starrygaze.midjourney.result.Message;
+import com.github.starrygaze.midjourney.service.discord.DiscordService;
 import eu.maxschuster.dataurl.DataUrl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,26 +15,42 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import javax.annotation.PostConstruct;
+
+/**
+ * 这个类名为 DiscordServiceImpl 是一个实现 DiscordService 接口的服务类。它主要负责和 Discord API 进行交互。
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class DiscordServiceImpl implements DiscordService {
+
 	private final ProxyProperties properties;
+
 	private static final String DISCORD_API_URL = "https://discord.com/api/v9/interactions";
+
 	private String userAgent;
 
 	private String discordUploadUrl;
 
 	private String imagineParamsJson;
+
 	private String upscaleParamsJson;
+
 	private String variationParamsJson;
+
 	private String resetParamsJson;
+
 	private String describeParamsJson;
 
 	private String discordUserToken;
+
 	private String discordGuildId;
+
 	private String discordChannelId;
 
+	/**
+	 * @PostConstruct init(): 这个是一个初始化方法，它在类实例化之后自动被调用。该方法从配置类中读取必要的 Discord 属性和参数，并读取预定的 API 参数模板。
+	 */
 	@PostConstruct
 	void init() {
 		this.discordUserToken = this.properties.getDiscord().getUserToken();
@@ -48,6 +65,11 @@ public class DiscordServiceImpl implements DiscordService {
 		this.describeParamsJson = ResourceUtil.readUtf8Str("api-params/describe.json");
 	}
 
+	/**
+	 * imagine(String prompt): 这个方法接受一个文本提示 (prompt) 并用该提示替换 API 请求模板中的对应部分。然后，通过 Discord API 发送请求，可能是执行一些操作或者获取一些信息。
+	 * @param prompt
+	 * @return
+	 */
 	@Override
 	public Message<Void> imagine(String prompt) {
 		String paramsStr = this.imagineParamsJson.replace("$guild_id", this.discordGuildId)
@@ -58,6 +80,14 @@ public class DiscordServiceImpl implements DiscordService {
 		return postJsonAndCheckStatus(params.toString());
 	}
 
+	/**
+	 * upscale(String messageId, int index, String messageHash): 这个方法接收一个消息ID、索引和消息哈希值，然后用这些值替换 API 请求模板中的对应部分。
+	 * 发送这个请求可能是为了执行一些操作，如提升图片的分辨率。
+	 * @param messageId
+	 * @param index
+	 * @param messageHash
+	 * @return
+	 */
 	@Override
 	public Message<Void> upscale(String messageId, int index, String messageHash) {
 		String paramsStr = this.upscaleParamsJson.replace("$guild_id", this.discordGuildId)
@@ -68,6 +98,13 @@ public class DiscordServiceImpl implements DiscordService {
 		return postJsonAndCheckStatus(paramsStr);
 	}
 
+	/**
+	 * variation(String messageId, int index, String messageHash): 这个方法与 upscale 方法类似，但执行的操作可能不同。
+	 * @param messageId
+	 * @param index
+	 * @param messageHash
+	 * @return
+	 */
 	@Override
 	public Message<Void> variation(String messageId, int index, String messageHash) {
 		String paramsStr = this.variationParamsJson.replace("$guild_id", this.discordGuildId)
@@ -78,6 +115,12 @@ public class DiscordServiceImpl implements DiscordService {
 		return postJsonAndCheckStatus(paramsStr);
 	}
 
+	/**
+	 * reset(String messageId, String messageHash): 这个方法接收一个消息ID和消息哈希值，并用这些值替换 API 请求模板中的对应部分。发送这个请求可能是为了执行一些重置操作。
+	 * @param messageId
+	 * @param messageHash
+	 * @return
+	 */
 	@Override
 	public Message<Void> reset(String messageId, String messageHash) {
 		String paramsStr = this.resetParamsJson.replace("$guild_id", this.discordGuildId)
@@ -87,6 +130,13 @@ public class DiscordServiceImpl implements DiscordService {
 		return postJsonAndCheckStatus(paramsStr);
 	}
 
+	/**
+	 * upload(String fileName, DataUrl dataUrl): 这个方法接收一个文件名和一个包含文件数据的 DataUrl。然后，它将文件上传到 Discord。
+	 * 如果上传成功，它会返回一个包含上传文件名的成功消息，否则它将返回一个错误消息。
+	 * @param fileName
+	 * @param dataUrl
+	 * @return
+	 */
 	@Override
 	public Message<String> upload(String fileName, DataUrl dataUrl) {
 		try {
@@ -115,6 +165,11 @@ public class DiscordServiceImpl implements DiscordService {
 		}
 	}
 
+	/**
+	 * describe(String finalFileName): 这个方法接收一个最终文件名，并用这个文件名替换 API 请求模板中的对应部分。发送这个请求可能是为了执行一些描述或标记操作。
+	 * @param finalFileName
+	 * @return
+	 */
 	@Override
 	public Message<Void> describe(String finalFileName) {
 		String fileName = CharSequenceUtil.subAfter(finalFileName, "/", true);
@@ -125,6 +180,11 @@ public class DiscordServiceImpl implements DiscordService {
 		return postJsonAndCheckStatus(paramsStr);
 	}
 
+	/**
+	 * putFile(String uploadUrl, DataUrl dataUrl): 这个私有方法接收一个上传 URL 和一个包含文件数据的 DataUrl，然后使用 RESTful API 将文件数据上传到给定的 URL。
+	 * @param uploadUrl
+	 * @param dataUrl
+	 */
 	private void putFile(String uploadUrl, DataUrl dataUrl) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("User-Agent", this.userAgent);
@@ -134,6 +194,9 @@ public class DiscordServiceImpl implements DiscordService {
 		new RestTemplate().put(uploadUrl, requestEntity);
 	}
 
+	/*
+	
+	 */
 	private ResponseEntity<String> postJson(String paramsStr) {
 		return postJson(DISCORD_API_URL, paramsStr);
 	}

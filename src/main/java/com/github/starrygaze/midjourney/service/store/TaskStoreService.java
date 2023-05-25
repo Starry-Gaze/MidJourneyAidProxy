@@ -1,6 +1,6 @@
-package com.github.starrygaze.midjourney.service;
+package com.github.starrygaze.midjourney.service.store;
 
-import com.github.starrygaze.midjourney.support.Task;
+import com.github.starrygaze.midjourney.entity.Task;
 
 import java.util.List;
 

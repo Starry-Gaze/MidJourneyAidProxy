@@ -9,14 +9,14 @@ import com.github.starrygaze.midjourney.dto.UVSubmitDTO;
 import com.github.starrygaze.midjourney.enums.Action;
 import com.github.starrygaze.midjourney.enums.TaskStatus;
 import com.github.starrygaze.midjourney.result.Message;
-import com.github.starrygaze.midjourney.service.TaskService;
-import com.github.starrygaze.midjourney.service.TaskStoreService;
-import com.github.starrygaze.midjourney.service.TranslateService;
-import com.github.starrygaze.midjourney.support.BannedPromptHelper;
-import com.github.starrygaze.midjourney.support.Task;
+import com.github.starrygaze.midjourney.service.task.TaskService;
+import com.github.starrygaze.midjourney.service.store.TaskStoreService;
+import com.github.starrygaze.midjourney.service.translate.TranslateService;
+import com.github.starrygaze.midjourney.support.handle.BannedPromptHelper;
+import com.github.starrygaze.midjourney.entity.Task;
 import com.github.starrygaze.midjourney.util.ConvertUtils;
 import com.github.starrygaze.midjourney.util.MimeTypeUtils;
-import com.github.starrygaze.midjourney.util.UVData;
+import com.github.starrygaze.midjourney.entity.UVData;
 import eu.maxschuster.dataurl.DataUrl;
 import eu.maxschuster.dataurl.DataUrlSerializer;
 import eu.maxschuster.dataurl.IDataUrlSerializer;
@@ -35,6 +35,7 @@ import java.net.MalformedURLException;
 @RequestMapping("/trigger")
 @RequiredArgsConstructor
 public class TriggerController {
+
 	private final TranslateService translateService;
 	private final TaskStoreService taskStoreService;
 	private final ProxyProperties properties;

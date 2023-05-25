@@ -2,6 +2,7 @@ package com.github.starrygaze.midjourney.enums;
 
 
 public enum TranslateWay {
+
 	/**
 	 * 百度翻译.
 	 */
@@ -14,5 +15,4 @@ public enum TranslateWay {
 	 * 不翻译.
 	 */
 	NULL
-
 }

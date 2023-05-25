@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @ApiModel("提交UV任务参数")
 public class UVSubmitDTO {
+
 	/**
 	 * state: 自定义参数, task中保留.
 	 */
@@ -17,6 +18,7 @@ public class UVSubmitDTO {
 	 */
 	@ApiModelProperty(value = "任务描述: 如 1320098173412546 U2", required = true)
 	private String content;
+
 	/**
 	 * notifyHook of caller
 	 */

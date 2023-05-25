@@ -42,6 +42,9 @@ public class ProxyProperties {
      */
     private String notifyHook;
 
+    /**
+     * discord 配置
+     */
     @Data
     public static class DiscordConfig {
         /**
@@ -70,6 +73,9 @@ public class ProxyProperties {
         private String userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36";
     }
 
+    /**
+     * 百度翻译配置
+     */
     @Data
     public static class BaiduTranslateConfig {
         /**
@@ -82,6 +88,9 @@ public class ProxyProperties {
         private String appSecret;
     }
 
+    /**
+     * openai配置
+     */
     @Data
     public static class OpenaiConfig {
         /**
@@ -106,6 +115,9 @@ public class ProxyProperties {
         private double temperature = 0;
     }
 
+    /**
+     * 任务存储
+     */
     @Data
     public static class TaskStore {
         /**

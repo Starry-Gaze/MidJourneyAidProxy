@@ -1,4 +1,4 @@
-package com.github.starrygaze.midjourney.util;
+package com.github.starrygaze.midjourney.entity;
 
 import com.github.starrygaze.midjourney.enums.Action;
 import lombok.Data;

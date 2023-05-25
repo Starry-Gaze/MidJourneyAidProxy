@@ -1,4 +1,4 @@
-package com.github.starrygaze.midjourney.service;
+package com.github.starrygaze.midjourney.service.translate;
 
 import java.util.regex.Pattern;
 

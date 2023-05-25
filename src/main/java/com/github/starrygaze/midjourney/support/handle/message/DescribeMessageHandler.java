@@ -1,10 +1,10 @@
-package com.github.starrygaze.midjourney.support.handle;
+package com.github.starrygaze.midjourney.support.handle.message;
 
 
 import cn.hutool.core.text.CharSequenceUtil;
 import com.github.starrygaze.midjourney.enums.TaskStatus;
-import com.github.starrygaze.midjourney.service.TaskService;
-import com.github.starrygaze.midjourney.support.Task;
+import com.github.starrygaze.midjourney.service.task.TaskService;
+import com.github.starrygaze.midjourney.entity.Task;
 import lombok.RequiredArgsConstructor;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
