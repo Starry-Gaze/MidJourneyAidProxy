@@ -62,7 +62,7 @@ public class ProxyProperties {
         /**
          * 是否使用user_token连接wss，默认false(使用bot_token).
          */
-        //private boolean userWss = false;
+        private boolean userWss = false;
         /**
          * 你的机器人token.
          */

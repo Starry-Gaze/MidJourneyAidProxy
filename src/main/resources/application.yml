@@ -31,13 +31,13 @@ mj:
     #使用用户
     user-wss: false
     #服务器id
-    guild-id: xxx
+    guild-id: 1108576024402333729
     #频道id
-    channel-id: xxx
+    channel-id: 1108576025681608734
     #登录token
-    user-token: xxx
+    user-token: MTEwNTQxNzM3NDAwMzM4NDM2MA.GkZhUz.Wf0yh52WUtFaRfCkVFpaKXeSOnWvR7T6IccdW4
     #机器人token
-    bot-token: xxx
+    bot-token: MTEwOTcxMDUxNjYxNzc2MDg5MA.G0VPha.-px9UStSfP8jSFXrBJBUwPBW2G44zXnYvMRxgQ
   #代理配置
   proxy:
     #本地代理地址
@@ -63,7 +63,7 @@ mj:
   #openai配置
   openai:
     #gpt的api-key
-    gpt-api-key: xxx
+    gpt-api-key: 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
     #使用的模型
     model: "gpt-3.5-turbo"
     #返回结果的最大分词数
