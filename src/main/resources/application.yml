@@ -22,27 +22,28 @@ knife4j:
         api-rule-resources:
           - com.github.starrygaze.midjourney.controller
 mj:
-  #
+  #任务存储
   task-store:
-    type: in_memory
+    type: IN_MEMORY
     timeout: 30d
   #discord配置
   discord:
     #服务器id
-    guild-id: XXX
+    guild-id: xxx
     #频道id
-    channel-id: XXX
+    channel-id: xxx
     #登录token
-    user-token: XXX
+    user-token: xxx
     #机器人token
-    bot-token: XXX
+    bot-token: xxx
   #代理配置
   proxy:
     #本地代理地址
     host: 127.0.0.1
     #本地代理端口
     port: 7890
-  translate-way: null
+  #翻译方式
+  translate-way: GPT
   #任务队列配置
   queue:
     #任务超时时间(分钟)
@@ -54,13 +55,13 @@ mj:
   #百度翻译配置
   baidu-translate:
     #百度翻译的APP_ID
-    appid: XXX
+    appid: xxx
     #百度翻译的密钥
-    app-secret: XXX
+    app-secret: xxx
   #openai配置
   openai:
     #gpt的api-key
-    gpt-api-key: XXX
+    gpt-api-key: xxx
     #使用的模型
     model: "gpt-3.5-turbo"
     #返回结果的最大分词数
@@ -68,10 +69,14 @@ mj:
     #相似度，取值 0-2
     temperature: 0
   #任务状态变更回调地址(你实际中转的项目地址)
-  notify-hook:
-
-
-
+  notify-hook: http://127.0.0.1:4120/notify
+#spring:
+#  cache:
+#    type: redis
+#  redis:
+#    host: 192.168.10.113
+#    port: 6379
+#    password: weaversys01A
 
 
 
