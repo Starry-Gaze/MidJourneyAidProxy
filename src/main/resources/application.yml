@@ -70,13 +70,6 @@ mj:
     temperature: 0
   #任务状态变更回调地址(你实际中转的项目地址)
   notify-hook: http://127.0.0.1:4120/notify
-#spring:
-#  cache:
-#    type: redis
-#  redis:
-#    host: 192.168.10.113
-#    port: 6379
-#    password: weaversys01A
 
 
 
