@@ -60,6 +60,10 @@ public class ProxyProperties {
          */
         private String userToken;
         /**
+         * 是否使用user_token连接wss，默认false(使用bot_token).
+         */
+        private boolean userWss = false;
+        /**
          * 你的机器人token.
          */
         private String botToken;

@@ -1,8 +1,8 @@
 package com.github.starrygaze.midjourney.support;
 import com.github.starrygaze.midjourney.ProxyProperties;
-import com.github.starrygaze.midjourney.support.handle.message.DescribeMessageHandler;
-import com.github.starrygaze.midjourney.support.handle.message.ImagineMessageHandler;
 import com.github.starrygaze.midjourney.support.handle.UVMessageHandler;
+import com.github.starrygaze.midjourney.support.handle.message.DescribeMessageHandler1;
+import com.github.starrygaze.midjourney.support.handle.message.ImagineMessageHandler1;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.entities.Message;
@@ -25,9 +25,9 @@ public class DiscordMessageListener extends ListenerAdapter {
 	/**
 	 * 不同类型的消息处理器
 	 */
-	private final ImagineMessageHandler imagineMessageHandler;
+	private final ImagineMessageHandler1 imagineMessageHandler;
 	private final UVMessageHandler uvMessageHandler;
-	private final DescribeMessageHandler describeMessageHandler;
+	private final DescribeMessageHandler1 describeMessageHandler;
 
 	/**
 	 * 这个方法用于判断是否忽略并记录一条消息。如果消息的频道ID与配置中的频道ID不一致，

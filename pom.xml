@@ -22,6 +22,7 @@
         <jda.version>5.0.0-beta.9</jda.version>
         <!--这个属性定义了项目中GPT-3 Java库的版本号。这是一个用于与OpenAI的GPT-3模型交互的库。-->
         <openai-gpt3-java.version>0.12.0</openai-gpt3-java.version>
+        <user-agent-utils.verison>1.21</user-agent-utils.verison>
         <!--这个属性定义了项目中Data URL处理库的版本号。Data URL是一种可以直接在URL中嵌入小文件的技术。-->
         <dataurl.version>2.0.0</dataurl.version>
         <!--这个属性定义了项目中Knife4j库的版本号。Knife4j是一个用于Java项目生成和展示OpenAPI文档的工具。-->
@@ -96,6 +97,11 @@
 			<artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
 			<version>${knife4j.verison}</version>
 		</dependency>
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>${user-agent-utils.verison}</version>
+        </dependency>
         <!--这个依赖提供了一种处理Spring Boot配置元数据的方法。-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

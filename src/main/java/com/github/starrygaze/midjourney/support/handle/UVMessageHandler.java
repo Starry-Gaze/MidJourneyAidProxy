@@ -6,7 +6,7 @@ import com.github.starrygaze.midjourney.enums.TaskStatus;
 import com.github.starrygaze.midjourney.service.task.TaskService;
 import com.github.starrygaze.midjourney.entity.Task;
 import com.github.starrygaze.midjourney.support.TaskCondition;
-import com.github.starrygaze.midjourney.support.handle.message.MessageHandler;
+import com.github.starrygaze.midjourney.support.handle.message.MessageHandler1;
 import com.github.starrygaze.midjourney.util.ConvertUtils;
 import com.github.starrygaze.midjourney.entity.MessageData;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import java.util.Set;
  */
 @Component
 @RequiredArgsConstructor
-public class UVMessageHandler implements MessageHandler {
+public class UVMessageHandler implements MessageHandler1 {
 	private final TaskService taskQueueService;
 
 	/**

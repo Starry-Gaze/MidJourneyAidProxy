@@ -8,6 +8,13 @@ import com.github.starrygaze.midjourney.service.store.impl.RedisTaskStoreService
 import com.github.starrygaze.midjourney.service.translate.impl.BaiduTranslateServiceImpl;
 import com.github.starrygaze.midjourney.service.translate.impl.GPTTranslateServiceImpl;
 import com.github.starrygaze.midjourney.entity.Task;
+import com.github.starrygaze.midjourney.wss.WebSocketStarter;
+import com.github.starrygaze.midjourney.wss.bot.BotMessageListener;
+import com.github.starrygaze.midjourney.wss.bot.BotWebSocketStarter;
+import com.github.starrygaze.midjourney.wss.user.UserMessageListener;
+import com.github.starrygaze.midjourney.wss.user.UserWebSocketStarter;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -72,5 +79,27 @@ public class BeanConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         return redisTemplate;
+    }
+
+    @Bean
+    WebSocketStarter webSocketStarter(ProxyProperties properties) {
+        return properties.getDiscord().isUserWss() ? new UserWebSocketStarter(properties) : new BotWebSocketStarter(properties);
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "mj.discord", name = "user-wss", havingValue = "true")
+    UserMessageListener userMessageListener() {
+        return new UserMessageListener();
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "mj.discord", name = "user-wss", havingValue = "false")
+    BotMessageListener botMessageListener() {
+        return new BotMessageListener();
+    }
+
+    @Bean
+    ApplicationRunner enableMetaChangeReceiverInitializer(WebSocketStarter webSocketStarter) {
+        return args -> webSocketStarter.start();
     }
 }

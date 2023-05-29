@@ -1,7 +1,9 @@
 package com.github.starrygaze.midjourney.service.task.impl;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import com.github.starrygaze.midjourney.ProxyProperties;
 import com.github.starrygaze.midjourney.enums.TaskStatus;
+import com.github.starrygaze.midjourney.find.ReturnCode;
 import com.github.starrygaze.midjourney.result.Message;
 import com.github.starrygaze.midjourney.entity.Task;
 import com.github.starrygaze.midjourney.service.discord.DiscordService;
@@ -10,6 +12,7 @@ import com.github.starrygaze.midjourney.service.store.TaskStoreService;
 import com.github.starrygaze.midjourney.service.task.TaskService;
 import com.github.starrygaze.midjourney.support.TaskCondition;
 import com.github.starrygaze.midjourney.util.MimeTypeUtils;
+import com.github.starrygaze.midjourney.vo.SubmitResultVO;
 import eu.maxschuster.dataurl.DataUrl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -61,6 +64,14 @@ public class TaskServiceImpl implements TaskService {
 		return this.runningTasks.stream().filter(t -> id.equals(t.getId())).findFirst().orElse(null);
 	}
 
+	@Override
+	public Task getRunningTask(String id) {
+		if (CharSequenceUtil.isBlank(id)) {
+			return null;
+		}
+		return this.runningTasks.stream().filter(t -> id.equals(t.getId())).findFirst().orElse(null);
+	}
+
 	/**
 	 * findTask(TaskCondition condition): 这个方法接收一个任务条件（TaskCondition）对象作为参数，然后在当前正在执行的任务列表中查找并返回满足这个条件的所有任务对象的 Stream 流。
 	 * @param condition
@@ -68,6 +79,11 @@ public class TaskServiceImpl implements TaskService {
 	 */
 	@Override
 	public Stream<Task> findTask(TaskCondition condition) {
+		return this.runningTasks.stream().filter(condition);
+	}
+
+	@Override
+	public Stream<Task> findRunningTask(TaskCondition condition) {
 		return this.runningTasks.stream().filter(condition);
 	}
 
@@ -85,6 +101,14 @@ public class TaskServiceImpl implements TaskService {
 		});
 	}
 
+	@Override
+	public SubmitResultVO submitImagine2(Task task) {
+		return submitTask2(task, () -> {
+			Message<Void> result = this.discordService.imagine(task.getFinalPrompt());
+			checkAndWait(task, result);
+		});
+	}
+
 	/**
 	 * 这些方法都是提交任务的方法，它们接收一些参数（包括一个任务对象和一些其他参数），然后提交一个任务到任务执行器（ThreadPoolTaskExecutor）进行处理。
 	 * 在提交任务的同时，也将这个任务保存到任务存储服务中，并将任务状态更新为提交状态，并通过通知服务发送通知。
@@ -97,6 +121,14 @@ public class TaskServiceImpl implements TaskService {
 	@Override
 	public Message<String> submitUpscale(Task task, String targetMessageId, String targetMessageHash, int index) {
 		return submitTask(task, () -> {
+			Message<Void> result = this.discordService.upscale(targetMessageId, index, targetMessageHash);
+			checkAndWait(task, result);
+		});
+	}
+
+	@Override
+	public SubmitResultVO submitUpscale2(Task task, String targetMessageId, String targetMessageHash, int index) {
+		return submitTask2(task, () -> {
 			Message<Void> result = this.discordService.upscale(targetMessageId, index, targetMessageHash);
 			checkAndWait(task, result);
 		});
@@ -120,6 +152,14 @@ public class TaskServiceImpl implements TaskService {
 		});
 	}
 
+	@Override
+	public SubmitResultVO submitVariation2(Task task, String targetMessageId, String targetMessageHash, int index) {
+		return submitTask2(task, () -> {
+			Message<Void> result = this.discordService.variation(targetMessageId, index, targetMessageHash);
+			checkAndWait(task, result);
+		});
+	}
+
 	/**
 	 *
 	 * 这些方法都是提交任务的方法，它们接收一些参数（包括一个任务对象和一些其他参数），然后提交一个任务到任务执行器（ThreadPoolTaskExecutor）进行处理。
@@ -136,6 +176,22 @@ public class TaskServiceImpl implements TaskService {
 			if (uploadResult.getCode() != Message.SUCCESS_CODE) {
 				task.setFinishTime(System.currentTimeMillis());
 				task.setFailReason(uploadResult.getDescription());
+				changeStatusAndNotify(task, TaskStatus.FAILURE);
+				return;
+			}
+			String finalFileName = uploadResult.getResult();
+			Message<Void> result = this.discordService.describe(finalFileName);
+			checkAndWait(task, result);
+		});
+	}
+
+	@Override
+	public SubmitResultVO submitDescribe2(Task task, DataUrl dataUrl) {
+		return submitTask2(task, () -> {
+			String taskFileName = task.getId() + "." + MimeTypeUtils.guessFileSuffix(dataUrl.getMimeType());
+			Message<String> uploadResult = this.discordService.upload(taskFileName, dataUrl);
+			if (uploadResult.getCode() != ReturnCode.SUCCESS) {
+				task.fail(uploadResult.getDescription());
 				changeStatusAndNotify(task, TaskStatus.FAILURE);
 				return;
 			}
@@ -174,6 +230,31 @@ public class TaskServiceImpl implements TaskService {
 			return Message.success(task.getId());
 		} else {
 			return Message.success(Message.WAITING_CODE, "排队中，前面还有" + size + "个任务", task.getId());
+		}
+	}
+
+	private SubmitResultVO submitTask2(Task task, Runnable runnable) {
+		this.taskStoreService.save(task);
+		int size;
+		try {
+			size = this.taskExecutor.getThreadPoolExecutor().getQueue().size();
+			this.taskExecutor.execute(() -> {
+				this.runningTasks.add(task);
+				try {
+					runnable.run();
+				} finally {
+					this.runningTasks.remove(task);
+				}
+			});
+		} catch (RejectedExecutionException e) {
+			this.taskStoreService.delete(task.getId());
+			return SubmitResultVO.fail(ReturnCode.QUEUE_REJECTED, "队列已满，请稍后尝试");
+		}
+		if (size == 0) {
+			return SubmitResultVO.of(ReturnCode.SUCCESS, "提交成功", task.getId());
+		} else {
+			return SubmitResultVO.of(ReturnCode.IN_QUEUE, "排队中，前面还有" + size + "个任务", task.getId())
+					.setProperty("numberOfQueues", size);
 		}
 	}
 
