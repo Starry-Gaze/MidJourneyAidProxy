@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.entities.Message;
 /**
  * MessageHandler 是一个接口，定义了处理消息的两个主要方法：onMessageReceived 和 onMessageUpdate。这两个方法都需要接收一个 Message 对象，分别用于处理接收到的新消息和更新的消息。
  */
-public interface MessageHandler {
+public interface MessageHandler1 {
 
 	void onMessageReceived(Message message);
 

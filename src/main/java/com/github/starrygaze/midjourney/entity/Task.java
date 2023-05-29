@@ -3,6 +3,7 @@ package com.github.starrygaze.midjourney.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.starrygaze.midjourney.enums.Action;
 import com.github.starrygaze.midjourney.enums.TaskStatus;
+import com.github.starrygaze.midjourney.enums.two.TaskAction;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -23,6 +24,11 @@ public class Task implements Serializable {
 	 * 任务的动作类型
 	 */
 	private Action action;
+
+	/**
+	 * 任务的动作类型 v2
+	 */
+	private TaskAction action2;
 
 	/**
 	 * 任务的ID
@@ -83,6 +89,12 @@ public class Task implements Serializable {
 	 */
 	private TaskStatus status = TaskStatus.NOT_START;
 
+	/**
+	 * 任务进度
+	 */
+	@ApiModelProperty("任务进度")
+	private String progress;
+
     /**
      * 任务失败的原因
      */
@@ -128,5 +140,24 @@ public class Task implements Serializable {
 			this.lock.notifyAll();
 		}
 	}
+	@JsonIgnore
+	public void start() {
+		this.startTime = System.currentTimeMillis();
+		this.status = TaskStatus.SUBMITTED;
+		this.progress = "0%";
+	}
 
+	@JsonIgnore
+	public void success() {
+		this.finishTime = System.currentTimeMillis();
+		this.status = TaskStatus.SUCCESS;
+		this.progress = "100%";
+	}
+
+	public void fail(String reason) {
+		this.finishTime = System.currentTimeMillis();
+		this.status = TaskStatus.FAILURE;
+		this.failReason = reason;
+		this.progress = "";
+	}
 }

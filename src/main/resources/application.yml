@@ -28,6 +28,8 @@ mj:
     timeout: 30d
   #discord配置
   discord:
+    #使用用户
+    user-wss: false
     #服务器id
     guild-id: xxx
     #频道id

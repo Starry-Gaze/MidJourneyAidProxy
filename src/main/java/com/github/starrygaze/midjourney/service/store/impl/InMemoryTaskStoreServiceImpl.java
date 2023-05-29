@@ -3,8 +3,10 @@ package com.github.starrygaze.midjourney.service.store.impl;
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.TimedCache;
 import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.stream.StreamUtil;
 import com.github.starrygaze.midjourney.service.store.TaskStoreService;
 import com.github.starrygaze.midjourney.entity.Task;
+import com.github.starrygaze.midjourney.support.TaskCondition;
 
 import java.time.Duration;
 import java.util.List;
@@ -33,12 +35,22 @@ public class InMemoryTaskStoreServiceImpl implements TaskStoreService {
 		this.taskMap.put(task.getId(), task);
 	}
 
+	@Override
+	public void save(Task task) {
+		this.taskMap.put(task.getId(), task);
+	}
+
 	/**
 	 * deleteTask(String key)：这个方法用来从 taskMap 缓存中删除一个任务。需要提供的参数是任务的 ID。
 	 * @param key
 	 */
 	@Override
 	public void deleteTask(String key) {
+		this.taskMap.remove(key);
+	}
+
+	@Override
+	public void delete(String key) {
 		this.taskMap.remove(key);
 	}
 
@@ -52,6 +64,11 @@ public class InMemoryTaskStoreServiceImpl implements TaskStoreService {
 		return this.taskMap.get(key);
 	}
 
+	@Override
+	public Task get(String key) {
+		return this.taskMap.get(key);
+	}
+
 	/**
 	 * listTask()：这个方法返回 taskMap 缓存中所有的任务。它首先将缓存的迭代器转化为一个列表。
 	 * @return
@@ -59,6 +76,21 @@ public class InMemoryTaskStoreServiceImpl implements TaskStoreService {
 	@Override
 	public List<Task> listTask() {
 		return ListUtil.toList(this.taskMap.iterator());
+	}
+
+	@Override
+	public List<Task> list() {
+		return ListUtil.toList(this.taskMap.iterator());
+	}
+
+	@Override
+	public List<Task> list(TaskCondition condition) {
+		return StreamUtil.of(this.taskMap.iterator()).filter(condition).toList();
+	}
+
+	@Override
+	public Task findOne(TaskCondition condition) {
+		return StreamUtil.of(this.taskMap.iterator()).filter(condition).findFirst().orElse(null);
 	}
 
 }

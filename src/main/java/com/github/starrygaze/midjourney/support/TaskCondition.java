@@ -4,6 +4,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import com.github.starrygaze.midjourney.entity.Task;
 import com.github.starrygaze.midjourney.enums.Action;
 import com.github.starrygaze.midjourney.enums.TaskStatus;
+import com.github.starrygaze.midjourney.enums.two.TaskAction;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -23,6 +24,11 @@ import java.util.function.Predicate;
 @Data
 @Accessors(chain = true)
 public class TaskCondition implements Predicate<Task> {
+
+	/**
+	 * 
+	 */
+	private String id;
 
 	/**
 	 * 任务的键
@@ -45,6 +51,11 @@ public class TaskCondition implements Predicate<Task> {
 	private String finalPrompt;
 
 	/**
+	 *
+	 */
+	private String description;
+
+	/**
 	 * 相关任务的ID
 	 */
 	private String relatedTaskId;
@@ -64,6 +75,11 @@ public class TaskCondition implements Predicate<Task> {
 	 */
 	private Set<Action> actionSet;
 
+	/**
+	 *
+	 */
+	private Set<TaskAction> actionSet2;
+
 	@Override
 	public boolean test(Task task) {
 		if (CharSequenceUtil.isNotBlank(this.key) && !this.key.equals(task.getKey())) {
@@ -76,6 +92,9 @@ public class TaskCondition implements Predicate<Task> {
 			return false;
 		}
 		if (CharSequenceUtil.isNotBlank(this.finalPrompt) && !this.finalPrompt.equals(task.getFinalPrompt())) {
+			return false;
+		}
+		if (CharSequenceUtil.isNotBlank(this.description) && !this.description.equals(task.getDescription())) {
 			return false;
 		}
 		if (CharSequenceUtil.isNotBlank(this.relatedTaskId) && !this.relatedTaskId.equals(task.getRelatedTaskId())) {
