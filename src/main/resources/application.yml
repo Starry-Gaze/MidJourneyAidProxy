@@ -24,26 +24,20 @@ knife4j:
 mj:
   #任务存储
   task-store:
-    type: IN_MEMORY
+    type: ${TASK_STORE_TYPE}
     timeout: 30d
   #discord配置
   discord:
     #服务器id
-    guild-id: xxx
+    guild-id: ${GUILD_ID}
     #频道id
-    channel-id: xxx
+    channel-id: ${CHANNEL_ID}
     #登录token
-    user-token: xxx
+    user-token: ${USER_TOKEN}
     #机器人token
-    bot-token: xxx
-  #代理配置
-  proxy:
-    #本地代理地址
-    host: 127.0.0.1
-    #本地代理端口
-    port: 7890
+    bot-token: ${BOT_TOKEN}
   #翻译方式
-  translate-way: GPT
+  translate-way: ${TANSLATE_WAY}
   #任务队列配置
   queue:
     #任务超时时间(分钟)
@@ -55,23 +49,26 @@ mj:
   #百度翻译配置
   baidu-translate:
     #百度翻译的APP_ID
-    appid: xxx
+    appid: ${APPID}
     #百度翻译的密钥
-    app-secret: xxx
+    app-secret: ${APP_SECRECT}
   #openai配置
   openai:
     #gpt的api-key
-    gpt-api-key: xxx
+    gpt-api-key: ${GPT_API_KEY}
     #使用的模型
     model: "gpt-3.5-turbo"
     #返回结果的最大分词数
     max-tokens: 2048
     #相似度，取值 0-2
     temperature: 0
-  #任务状态变更回调地址(你实际中转的项目地址)
-  notify-hook: http://127.0.0.1:4120/notify
+    #任务状态变更回调地址(你实际中转的项目地址)
+  notify-hook: ${NOTIFY_HOOK}
 
-
-
-
-
+spring:
+  cache:
+    type: ${SPRING_CACHE_TYPE}
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PW}
