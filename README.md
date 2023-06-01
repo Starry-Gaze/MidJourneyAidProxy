@@ -176,7 +176,7 @@ services:
 
 2. 感兴趣的朋友也欢迎加入交流群讨论一下，扫码进群名额已满，加管理员微信邀请进群
 
-   <img src="C:\Users\11049\AppData\Roaming\Typora\typora-user-images\image-20230602061317505.png" alt="image-20230602061317505" style="zoom:25%;" align='left'/>
+   <img src="https://github.com/Starry-Gaze/MidJourneyAidProxy/blob/main/botSetting/team_code.jpg" alt="" style="zoom:25%;" align='left'/>
 
 ## 配置项
 
@@ -252,5 +252,5 @@ spring:
 
 如果觉得这个项目对你有所帮助，请帮忙点个star；也可以请Starry-Gaze团队喝杯奶茶～
 
-<img src="C:\Users\11049\AppData\Roaming\Typora\typora-user-images\image-20230602052733951.png" alt="image-20230602052733951" style="zoom: 25%;" align='left' />
+<img src="https://github.com/Starry-Gaze/MidJourneyAidProxy/blob/main/botSetting/support_code.jpg" alt="image-20230602052733951" style="zoom: 25%;" align='left' />
 
