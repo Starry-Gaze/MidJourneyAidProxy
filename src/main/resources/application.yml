@@ -41,11 +41,11 @@ mj:
   #任务队列配置
   queue:
     #任务超时时间(分钟)
-    timeout-minutes: 5
+    timeout-minutes: ${TIMEOUT_MINUTES}
     #并发数
-    core-size: 3
+    core-size: ${CORE_SIZE}
     #等待队列长度
-    queue-size: 10
+    queue-size: ${QUEUE_SIZE}
   #百度翻译配置
   baidu-translate:
     #百度翻译的APP_ID
@@ -57,9 +57,9 @@ mj:
     #gpt的api-key
     gpt-api-key: ${GPT_API_KEY}
     #使用的模型
-    model: "gpt-3.5-turbo"
+    model: ${GPT_MODEL}
     #返回结果的最大分词数
-    max-tokens: 2048
+    max-tokens: ${GPT_MAX_TOKENS}
     #相似度，取值 0-2
     temperature: 0
     #任务状态变更回调地址(你实际中转的项目地址)

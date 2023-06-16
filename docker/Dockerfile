@@ -24,6 +24,11 @@ ENV SPRING_CACHE_TYPE=""
 ENV REDIS_HOST=""
 ENV REDIS_PORT=""
 ENV REDIS_PW=""
+ENV TIMEOUT_MINUTES=""
+ENV CORE_SIZE=""
+ENV QUEUE_SIZE=""
+ENV GPT_MODEL=""
+ENV GPT_MAX_TOKENS=""
 
 #这一行将本地的 ${JAR_FILE} 文件（即 "MidJourneyAidProxy.jar" 文件）添加到镜像中的 /app.jar。
 ADD ${JAR_FILE} /app.jar
